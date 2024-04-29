@@ -11,6 +11,7 @@
 		A2F63C342BE0549200822BCA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C332BE0549200822BCA /* ContentView.swift */; };
 		A2F63C362BE0549700822BCA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F63C352BE0549700822BCA /* Assets.xcassets */; };
 		A2F63C392BE0549700822BCA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F63C382BE0549700822BCA /* Preview Assets.xcassets */; };
+		A2F63C402BE05ECA00822BCA /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C3F2BE05ECA00822BCA /* RatingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		A2F63C332BE0549200822BCA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A2F63C352BE0549700822BCA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2F63C382BE0549700822BCA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A2F63C3F2BE05ECA00822BCA /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				A2F63C312BE0549200822BCA /* MoodScapeApp.swift */,
 				A2F63C332BE0549200822BCA /* ContentView.swift */,
+				A2F63C3F2BE05ECA00822BCA /* RatingView.swift */,
 				A2F63C352BE0549700822BCA /* Assets.xcassets */,
 				A2F63C372BE0549700822BCA /* Preview Content */,
 			);
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2F63C402BE05ECA00822BCA /* RatingView.swift in Sources */,
 				A2F63C342BE0549200822BCA /* ContentView.swift in Sources */,
 				A2F63C322BE0549200822BCA /* MoodScapeApp.swift in Sources */,
 			);
