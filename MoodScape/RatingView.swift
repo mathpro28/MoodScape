@@ -11,9 +11,10 @@ struct RatingsView: View {
     var rating:Int
     var body: some View {
         HStack {
-            ForEach(1...6,id:\.self){ circle in
+            ForEach(1...5,id:\.self){ circle in
                 Image (systemName: (circle <= rating) ?
-                       "star.fill" : "star")
+                       MIcons.starFilled.rawValue : MIcons.starEmpty.rawValue)
+                    .foregroundColor(Color.yellow)
             }
         }
     }
