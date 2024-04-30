@@ -16,6 +16,7 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("How are you feeling today?")
             RatingsView(rating: 0)
+            Spacer()
         }
         .padding()
     }
