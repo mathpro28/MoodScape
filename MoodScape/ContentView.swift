@@ -10,11 +10,12 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
+            Spacer()
             Image(systemName: "figure.boxing")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
             Text("How are you feeling today?")
-            RatingsView(rating: 3)
+            RatingsView(rating: 0)
         }
         .padding()
     }
