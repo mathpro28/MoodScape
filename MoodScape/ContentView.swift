@@ -14,17 +14,24 @@ struct ContentView: View {
       LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
         .ignoresSafeArea(.all) // Extend gradient to entire screen
 
-      VStack {
-          Spacer()
-        Text("How are you feeling today?")
-              .bold()
-              .foregroundStyle(.white)
-              .font(.largeTitle)
-              .frame(alignment: .trailing)
-          Spacer()
-        RatingView()
-        Spacer()
-      }
+        VStack {
+            Spacer()
+            
+            Text("How are you feeling ")
+                .bold()
+                .foregroundColor(.white)
+                .font(.largeTitle)
+            + Text("today?")
+                .bold()
+                .foregroundColor(.yellow)
+                .font(.largeTitle)
+            
+            Spacer()
+            
+            RatingView()
+            
+            Spacer()
+        }
       .padding()
     }
   }
