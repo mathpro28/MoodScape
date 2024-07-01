@@ -22,20 +22,20 @@ struct RatingsView: View {
             }
         }
       }
+//        Spacer()
         Button {
             guard rating > 0 else { return }
             print("Rating submitted: \(rating)")
         } label: {
             Text("Submit")
-                .foregroundColor(.white)
+                .bold()
+                .foregroundColor(.black)
                 .padding()
         }
         .frame(width: 130, height: 50)
         .background(RoundedRectangle(cornerRadius: 20)
-        .foregroundColor(Color.green))
-//        .onTapGesture(perform: {
-//            submitted = true
-//        })
+        .foregroundColor(Color.gray))
+        .shadow(radius: 10)
     }
   }
 }
