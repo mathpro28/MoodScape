@@ -27,9 +27,11 @@ struct MoodDropView: View {
         ZStack {
             ForEach(0..<randomMoods.count, id: \.self) { index in
                 Text(randomMoods[index])
-                    .font(.largeTitle)
+                    .font(.footnote)
+                    .bold()
+                    .foregroundStyle(.white)
                     .offset(offsets[index])
-                    .animation(Animation.linear(duration: 5).repeatForever(autoreverses: false), value: offsets[index])
+                    .animation(Animation.linear(duration: 5).repeatForever(autoreverses: true), value: offsets[index])
             }
         }
         .onAppear(perform: startDroppingMoods)
