@@ -8,39 +8,58 @@
 import RealmSwift
 import SwiftUI
 
-struct RatingsView: View {
-    @State var rating: Int
+import SwiftUI
 
-  var body: some View {
-    VStack {
-      HStack(spacing: 5) {
-        ForEach(1...5, id: \.self) { number in
-          Image(systemName: number <= rating ? MIcons.starFilled.rawValue : MIcons.starEmpty.rawValue)
-            .foregroundColor(Color.yellow)
-            .onTapGesture {
-              rating = number
+struct RatingView: View {
+    @State private var rating: Int = 0
+    @State private var showWarning: Bool = false
+
+    var body: some View {
+        VStack {
+            HStack(spacing: 5) {
+                ForEach(1...5, id: \.self) { number in
+                    Text("\(number)")
+                        .frame(width: 40, height: 40) // Adjust the size of the box
+                        .background(number <= rating ? Color.yellow : Color.gray) // Change background color based on rating
+                        .foregroundColor(.white) // Text color
+                        .cornerRadius(5) // Rounded corners for the box
+                        .onTapGesture {
+                            rating = number
+                            showWarning = false // Hide warning when a number is selected
+                        }
+                }
+            }
+            .padding(.bottom, 20) // Add specific padding here
+
+            Button(action: {
+                if rating > 0 {
+                    print("Rating submitted: \(rating)")
+                } else {
+                    showWarning = true
+                }
+            }) {
+                Text("Submit")
+                    .bold()
+                    .foregroundColor(.black)
+                    .padding()
+                    .frame(width: 130, height: 50)
+                    .background(RoundedRectangle(cornerRadius: 20).foregroundColor(rating > 0 ? Color.gray : Color.gray.opacity(0.5)))
+                    .shadow(radius: 10)
+            }
+            .disabled(rating == 0) // Disable the button if rating is not set
+
+            if showWarning {
+                Text("Please select a rating before submitting.")
+                    .foregroundColor(.red)
+                    .padding(.top, 10)
             }
         }
-      }
-//        Spacer()
-        Button {
-            guard rating > 0 else { return }
-            print("Rating submitted: \(rating)")
-        } label: {
-            Text("Submit")
-                .bold()
-                .foregroundColor(.black)
-                .padding()
-        }
-        .frame(width: 130, height: 50)
-        .background(RoundedRectangle(cornerRadius: 20)
-        .foregroundColor(Color.gray))
-        .shadow(radius: 10)
+        .padding()
     }
-  }
 }
 
 
+
 #Preview {
-    RatingsView(rating: 4)
+    RatingView()
 }

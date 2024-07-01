@@ -15,16 +15,14 @@ struct ContentView: View {
         .ignoresSafeArea(.all) // Extend gradient to entire screen
 
       VStack {
-//        Image(systemName: "figure.boxing")
-//          .imageScale(.large)
-//          .foregroundStyle(.tint)
+          Spacer()
         Text("How are you feeling today?")
               .bold()
               .foregroundStyle(.white)
               .font(.largeTitle)
               .frame(alignment: .trailing)
           Spacer()
-        RatingsView(rating: 0)
+        RatingView()
         Spacer()
       }
       .padding()
