@@ -28,6 +28,7 @@ struct ContentView: View {
               
               Spacer().frame(height: 20)
               
+              
 //              ZStack {
 //                  Color.clear
 //                      .frame(width: 100, height: 100) // Adjust size as needed
@@ -40,6 +41,15 @@ struct ContentView: View {
               
               RatingView()
               
+              NavigationLink(destination: MoodChartView()) {
+                  Text("Summary")
+                      .bold()
+                      .foregroundColor(.white)
+                      .padding()
+                      .background(Color.blue)
+                      .cornerRadius(10)
+              }
+                                  
               Spacer()
           }
           .padding()

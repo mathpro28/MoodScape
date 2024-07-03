@@ -39,4 +39,23 @@ class MoodDataManager: ObservableObject {
         let endOfYear = calendar.date(byAdding: .year, value: 1, to: startOfYear)!
         return fetchMoodEntries(from: startOfYear, to: endOfYear)
     }
+    
+    func generateRandomMoodData(numberOfEntries: Int) {
+            let calendar = Calendar.current
+            let today = Date()
+            
+            try! realm.write {
+                for _ in 0..<numberOfEntries {
+                    let randomDaysOffset = Int.random(in: -365...0)
+                    let randomDate = calendar.date(byAdding: .day, value: randomDaysOffset, to: today)!
+                    let randomMoodScale = Int.random(in: 1...5)
+                    
+                    let moodEntry = MoodEntry()
+                    moodEntry.date = randomDate
+                    moodEntry.moodScale = randomMoodScale
+                    
+                    realm.add(moodEntry)
+                }
+            }
+        }
 }
