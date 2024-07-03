@@ -5,15 +5,13 @@
 //  Created by Mateo Mercado Maguiña on 29/4/24.
 //
 
+import SwiftUI
 import RealmSwift
-import SwiftUI
-
-import SwiftUI
 
 struct RatingView: View {
     @State private var rating: Int = 0
-    @State private var showWarning: Bool = false
-
+    @State private var showAlert: Bool = false
+    
     var body: some View {
         VStack {
             HStack(spacing: 5) {
@@ -25,40 +23,57 @@ struct RatingView: View {
                         .cornerRadius(5) // Rounded corners for the box
                         .onTapGesture {
                             rating = number
-                            showWarning = false // Hide warning when a number is selected
                         }
                 }
             }
-            .padding(.bottom, 20) // Add specific padding here
-
-            Button(action: {
-                if rating > 0 {
-                    print("Rating submitted: \(rating)")
-                } else {
-                    showWarning = true
-                }
-            }) {
+            
+            Button(action: saveRating) {
                 Text("Submit")
                     .bold()
                     .foregroundColor(.black)
                     .padding()
-                    .frame(width: 130, height: 50)
-                    .background(RoundedRectangle(cornerRadius: 20).foregroundColor(rating > 0 ? Color.gray : Color.gray.opacity(0.5)))
-                    .shadow(radius: 10)
             }
-            .disabled(rating == 0) // Disable the button if rating is not set
-
-            if showWarning {
-                Text("Please select a rating before submitting.")
-                    .foregroundColor(.red)
-                    .padding(.top, 10)
+            .frame(width: 130, height: 50)
+            .background(RoundedRectangle(cornerRadius: 20)
+            .foregroundColor(Color.gray))
+            .shadow(radius: 10)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Mood Saved"), message: Text("Your mood has been saved successfully."), dismissButton: .default(Text("OK")))
             }
         }
-        .padding()
+    }
+
+    func saveRating() {
+        guard rating > 0 else { return }
+
+        let realm = try! Realm()
+        let today = Calendar.current.startOfDay(for: Date())
+
+        // Check if there are existing moods for today
+        let existingMoods = realm.objects(MoodEntry.self).filter("date == %@", today)
+        let totalMoodScale: Int = existingMoods.sum(ofProperty: "moodScale")
+        let count: Int = existingMoods.count
+
+        try! realm.write {
+            // If there are existing moods for today, average the mood scales
+            if count > 0 {
+                let newMoodScale = (totalMoodScale + rating) / (count + 1)
+                for mood in existingMoods {
+                    mood.moodScale = newMoodScale
+                }
+            } else {
+                // If no mood for today exists, create a new one
+                let newMood = MoodEntry()
+                newMood.date = today
+                newMood.moodScale = rating
+                realm.add(newMood)
+            }
+        }
+
+        showAlert = true
+        print("Rating submitted: \(rating)")
     }
 }
-
-
 
 #Preview {
     RatingView()
