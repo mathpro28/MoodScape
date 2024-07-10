@@ -5,14 +5,13 @@
 //  Created by Mateo Mercado Maguiña on 29/4/24.
 //
 
-import RealmSwift
-import SwiftUI
-
 import SwiftUI
 
 struct RatingView: View {
+    
+    @Environment(\.modelContext) private var context
+    
     @State private var rating: Int = 0
-    @State private var showWarning: Bool = false
 
     var body: some View {
         VStack {
@@ -25,18 +24,13 @@ struct RatingView: View {
                         .cornerRadius(5) // Rounded corners for the box
                         .onTapGesture {
                             rating = number
-                            showWarning = false // Hide warning when a number is selected
                         }
                 }
             }
             .padding(.bottom, 20) // Add specific padding here
 
             Button(action: {
-                if rating > 0 {
-                    print("Rating submitted: \(rating)")
-                } else {
-                    showWarning = true
-                }
+                _ = Register(value: rating, date: .now)
             }) {
                 Text("Submit")
                     .bold()
@@ -47,18 +41,10 @@ struct RatingView: View {
                     .shadow(radius: 10)
             }
             .disabled(rating == 0) // Disable the button if rating is not set
-
-            if showWarning {
-                Text("Please select a rating before submitting.")
-                    .foregroundColor(.red)
-                    .padding(.top, 10)
-            }
         }
         .padding()
     }
 }
-
-
 
 #Preview {
     RatingView()
