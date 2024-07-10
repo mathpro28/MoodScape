@@ -6,3 +6,15 @@
 //
 
 import Foundation
+import SwiftData
+
+@Model
+class Register {
+    var value: Int
+    var date: Date
+    
+    init(value: Int, date: Date) {
+        self.value = value
+        self.date = date
+    }
+}

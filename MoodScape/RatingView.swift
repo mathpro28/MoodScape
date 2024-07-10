@@ -29,18 +29,22 @@ struct RatingView: View {
             }
             .padding(.bottom, 20) // Add specific padding here
 
-            Button(action: {
-                _ = Register(value: rating, date: .now)
-            }) {
-                Text("Submit")
-                    .bold()
-                    .foregroundColor(.black)
-                    .padding()
-                    .frame(width: 130, height: 50)
-                    .background(RoundedRectangle(cornerRadius: 20).foregroundColor(rating > 0 ? Color.gray : Color.gray.opacity(0.5)))
-                    .shadow(radius: 10)
+            if rating > 0 {
+                Button(action: {
+                    let newEntry = Register(value: rating, date: .now)
+                    context.insert(newEntry)
+                    print("Rating submitted: \(rating)")
+                }) {
+                    Text("Submit")
+                        .bold()
+                        .foregroundColor(.black)
+                        .padding()
+                        .frame(width: 130, height: 50)
+                        .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.gray))
+                        .shadow(radius: 10)
+                }
             }
-            .disabled(rating == 0) // Disable the button if rating is not set
+            
         }
         .padding()
     }
