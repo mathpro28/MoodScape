@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
@@ -30,13 +31,13 @@ struct ContentView: View {
                 
                 Spacer().frame(height: 20)
                 
-                //              ZStack {
-                //                  Color.clear
-                //                      .frame(width: 100, height: 100) // Adjust size as needed
-                //
-                //                  MoodDropView()
-                //              }
-                //              .frame(maxWidth: 200, maxHeight: 200)
+//                              ZStack {
+//                                  Color.clear
+//                                      .frame(width: 100, height: 100) // Adjust size as needed
+//                
+//                                  MoodDropView()
+//                              }
+//                              .frame(maxWidth: 200, maxHeight: 200)
                 
                 Spacer().frame(height: 20)
                 
@@ -51,5 +52,9 @@ struct ContentView: View {
 
 
 #Preview {
-    ContentView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Register.self, configurations: config)
+    
+    return ContentView()
+        .modelContainer(container)
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RatingView: View {
     
@@ -51,5 +52,9 @@ struct RatingView: View {
 }
 
 #Preview {
-    RatingView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try! ModelContainer(for: Register.self, configurations: config)
+
+        return RatingView()
+            .modelContainer(container)
 }
