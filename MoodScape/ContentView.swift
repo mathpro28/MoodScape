@@ -19,7 +19,7 @@ struct ContentView: View {
                     .ignoresSafeArea(.all) // Extend gradient to entire screen
                 
                 VStack {
-                    Spacer()
+                    Spacer().frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
                     
                     Text("How are you feeling ")
                         .bold()
@@ -30,7 +30,7 @@ struct ContentView: View {
                         .foregroundColor(.yellow)
                         .font(.largeTitle)
                     
-                    Spacer().frame(height: 20)
+                    Spacer().frame(height: 250)
                     
     //                              ZStack {
     //                                  Color.clear
@@ -40,12 +40,11 @@ struct ContentView: View {
     //                              }
     //                              .frame(maxWidth: 200, maxHeight: 200)
                     
-                    Spacer().frame(height: 20)
+//                    Spacer().frame(height: 20)
                     
                     RatingView()
                     
-                    Spacer()
-                    
+//                    Spacer()
                     
                     NavigationLink(destination: HistoryView()) {
                         Text("Summary")
