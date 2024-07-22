@@ -32,14 +32,14 @@ struct ContentView: View {
                     
                     Spacer().frame(height: 250)
                     
-    //                              ZStack {
-    //                                  Color.clear
-    //                                      .frame(width: 100, height: 100) // Adjust size as needed
-    //                
-    //                                  MoodDropView()
-    //                              }
-    //                              .frame(maxWidth: 200, maxHeight: 200)
-                    
+//                                  ZStack {
+//                                      Color.clear
+//                                          .frame(width: 100, height: 100) // Adjust size as needed
+//                    
+//                                      MoodDropView()
+//                                  }
+//                                  .frame(maxWidth: 200, maxHeight: 200)
+//                    
 //                    Spacer().frame(height: 20)
                     
                     RatingView()

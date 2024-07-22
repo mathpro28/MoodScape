@@ -31,7 +31,7 @@ struct HistoryView: View {
             .listStyle(PlainListStyle())
         }
         .padding()
-        .navigationTitle("Summary")
+//        .navigationTitle("Summary")
     }
 }
 
