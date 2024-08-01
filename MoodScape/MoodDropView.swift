@@ -28,9 +28,11 @@ struct MoodDropView: View {
         VStack {
             Spacer()
             ZStack {
+                Color.black // Set the background color to black
+                    .ignoresSafeArea() // Extend the color to the edges of the screen
+                
                 ForEach(0..<randomMoods.count, id: \.self) { index in
                     Text(randomMoods[index])
-//                        .font(.custom("Courier New", size: 20))
                         .bold()
                         .shadow(radius: 0.1)
                         .foregroundColor(.white)
@@ -45,21 +47,22 @@ struct MoodDropView: View {
         }
     }
 
-        func startDroppingMoods() {
-            randomMoods = moods.keys.shuffled().prefix(6).map { $0 }
-            offsets = Array(repeating: CGSize(width: -UIScreen.main.bounds.width, height: 0), count: randomMoods.count)
-            
-            for i in 0..<randomMoods.count {
-                let yPosition = CGFloat(i) * 20 // Adjust vertical spacing
-                offsets[i] = CGSize(width: -UIScreen.main.bounds.width / 2 + 150, height: yPosition)
-            }
-        }
 
-        func animateWord(at index: Int) {
-            withAnimation(Animation.linear(duration: animationDuration).repeatForever(autoreverses: true)) {
-                offsets[index] = CGSize(width: UIScreen.main.bounds.width / 2 - 150, height: offsets[index].height)
-            }
+    func startDroppingMoods() {
+        randomMoods = moods.keys.shuffled().prefix(6).map { $0 }
+        offsets = Array(repeating: CGSize(width: -UIScreen.main.bounds.width, height: 0), count: randomMoods.count)
+        
+        for i in 0..<randomMoods.count {
+            let yPosition = CGFloat(i) * 20 // Adjust vertical spacing
+            offsets[i] = CGSize(width: -UIScreen.main.bounds.width / 2 + 150, height: yPosition)
         }
+    }
+    
+    func animateWord(at index: Int) {
+        withAnimation(Animation.linear(duration: animationDuration).repeatForever(autoreverses: true)) {
+            offsets[index] = CGSize(width: UIScreen.main.bounds.width / 2 - 150, height: offsets[index].height)
+        }
+    }
 }
 
 #Preview {
