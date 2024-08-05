@@ -48,9 +48,9 @@ struct ContentView: View {
 //                    Spacer()
                     
                     NavigationLink(destination: HistoryView()) {
-                        Text("Summary")
+                        Image(systemName: "arrow.right")
                             .bold()
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .padding()
                             .frame(width: 130, height: 50)
                             .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.gray))
