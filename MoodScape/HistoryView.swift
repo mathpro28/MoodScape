@@ -15,11 +15,11 @@ struct HistoryView: View {
     
     var body: some View {
         VStack {
-            Text("History")
-                .bold()
-                .foregroundColor(.black)
-                .font(.largeTitle)
-                .padding()
+//            Text("History")
+//                .bold()
+//                .foregroundColor(.black)
+//                .font(.largeTitle)
+//                .padding()
             
             List(entries) { entry in
                 HStack {
@@ -31,7 +31,7 @@ struct HistoryView: View {
             .listStyle(PlainListStyle())
         }
         .padding()
-//        .navigationTitle("Summary")
+        .navigationTitle("List Summary")
     }
 }
 
