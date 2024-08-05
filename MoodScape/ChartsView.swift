@@ -30,7 +30,7 @@ struct ChartsView: View {
                 .padding()
                 .background(Color.black)
 
-                ChartView(data: chartData, title: "\(defaultSelectedSummary) Summary")
+                ChartView(data: chartData, title: "\(defaultSelectedSummary) Summary", summaryType: SummaryType(rawValue: defaultSelectedSummary)!)
                     .frame(height: 300)
                     .padding()
                     .background(Color.black)
@@ -57,7 +57,7 @@ struct ChartsView: View {
         }
     }
 
-    private var chartData: [Double] {
+    private var chartData: [(x: Int, y: Double)] {
         switch defaultSelectedSummary {
         case "Daily":
             return fetchData(for: .daily)
@@ -70,56 +70,71 @@ struct ChartsView: View {
         }
     }
 
-    private func fetchData(for summaryType: SummaryType) -> [Double] {
+    private func fetchData(for summaryType: SummaryType) -> [(x: Int, y: Double)] {
         let calendar = Calendar.current
         let filteredData: [Register]
         
         switch summaryType {
         case .daily:
             filteredData = registerData.filter { calendar.isDateInToday($0.date) }
+            return filteredData.map { (x: calendar.component(.hour, from: $0.date), y: Double($0.value)) }
         case .weekly:
             let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
             filteredData = registerData.filter { $0.date >= startOfWeek }
+            return filteredData.map { (x: calendar.component(.weekday, from: $0.date), y: Double($0.value)) }
         case .monthly:
             let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: Date()))!
             filteredData = registerData.filter { $0.date >= startOfMonth }
+            return filteredData.map { (x: calendar.component(.day, from: $0.date), y: Double($0.value)) }
         }
-
-        return filteredData.map { Double($0.value) }
     }
 
-    enum SummaryType {
-        case daily, weekly, monthly
+    enum SummaryType: String {
+        case daily = "Daily"
+        case weekly = "Weekly"
+        case monthly = "Monthly"
     }
 }
 
 struct ChartView: View {
-    let data: [Double]
+    let data: [(x: Int, y: Double)]
     let title: String
+    let summaryType: ChartsView.SummaryType
 
     var body: some View {
         Chart {
-            ForEach(Array(data.enumerated()), id: \.0) { index, value in
+            ForEach(data, id: \.x) { point in
                 LineMark(
-                    x: .value("Index", index + 1),
-                    y: .value("Value", value)
+                    x: .value(xAxisLabel, point.x),
+                    y: .value("Value", point.y)
                 )
                 .foregroundStyle(.yellow) // Line color
             }
         }
         .chartXAxis {
-            AxisMarks(preset: .aligned, position: .bottom) { _ in
+            AxisMarks(preset: .aligned, position: .bottom) { value in
                 AxisGridLine().foregroundStyle(.gray)
                 AxisTick().foregroundStyle(.gray)
                 AxisValueLabel().foregroundStyle(.white) // Label color
             }
         }
         .chartYAxis {
-            AxisMarks(preset: .aligned, position: .leading) { _ in
+            AxisMarks(preset: .aligned, position: .leading) { value in
                 AxisGridLine().foregroundStyle(.gray)
                 AxisTick().foregroundStyle(.gray)
                 AxisValueLabel().foregroundStyle(.white) // Label color
             }
+        }
+    }
+
+    private var xAxisLabel: String {
+        switch summaryType {
+        case .daily:
+            return "Hour"
+        case .weekly:
+            return "Day"
+        case .monthly:
+            return "Day"
         }
     }
 }

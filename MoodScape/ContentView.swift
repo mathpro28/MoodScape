@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import SwiftUICharts
 
 struct ContentView: View {
     
