@@ -46,7 +46,7 @@ struct ContentView: View {
                     
 //                    Spacer()
                     
-                    NavigationLink(destination: ChartsView()) {
+                    NavigationLink(destination: HistoryView()) {
                         Image(systemName: "arrow.right")
                             .bold()
                             .foregroundColor(.white)
