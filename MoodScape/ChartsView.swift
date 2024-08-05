@@ -7,14 +7,14 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct ChartsView: View {
     @State private var defaultSelectedSummary = "Weekly"
     private let summaryOptions = ["Daily", "Weekly", "Monthly"]
-    private let dailyData: [Double] = [1, 2, 3, 4, 5, 6, 7]
-    private let weeklyData: [Double] = [5, 5, 3, 2, 1, 3, 3]
-    private let monthlyData: [Double] = [1, 3, 2, 4, 3, 5, 6, 7, 4, 3, 2, 1]
 
+    @Query(sort: \Register.date, order: .forward) private var registerData: [Register]
+    
     var body: some View {
         ZStack {
             Color.black
@@ -30,78 +30,111 @@ struct ChartsView: View {
                 .padding()
                 .background(Color.black)
 
-                ChartView(data: chartData, title: "\(defaultSelectedSummary) Summary")
+                ChartView(data: chartData, title: "\(defaultSelectedSummary) Summary", summaryType: SummaryType(rawValue: defaultSelectedSummary)!)
                     .frame(height: 300)
                     .padding()
                     .background(Color.black)
                     .chartStyle()
                 
-//                Spacer()
-                
                 HStack {
-                    ShareLink(item: "Check out this mood summary!") {
+                    ShareLink(item: "Check out my mood summary!") {
                         Label("", systemImage: "square.and.arrow.up")
                             .foregroundColor(.white)
                     }
                     
                     Spacer()
                     
-                    Button(action: {
-                        // Add action here
-                    }) {
+                    NavigationLink(destination: HistoryView()) {
                         Label("", systemImage: "list.bullet")
                             .foregroundColor(.white)
                     }
                 }
                 .padding()
-                
+                .navigationTitle("Charts Summary")
             }
             .foregroundColor(.white) // Set text color to white
             .preferredColorScheme(.dark)
         }
     }
 
-    private var chartData: [Double] {
+    private var chartData: [(x: Int, y: Double)] {
         switch defaultSelectedSummary {
         case "Daily":
-            return dailyData
+            return fetchData(for: .daily)
         case "Weekly":
-            return weeklyData
+            return fetchData(for: .weekly)
         case "Monthly":
-            return monthlyData
+            return fetchData(for: .monthly)
         default:
             return []
         }
     }
+
+    private func fetchData(for summaryType: SummaryType) -> [(x: Int, y: Double)] {
+        let calendar = Calendar.current
+        let filteredData: [Register]
+        
+        switch summaryType {
+        case .daily:
+            filteredData = registerData.filter { calendar.isDateInToday($0.date) }
+            return filteredData.map { (x: calendar.component(.hour, from: $0.date), y: Double($0.value)) }
+        case .weekly:
+            let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+            filteredData = registerData.filter { $0.date >= startOfWeek }
+            return filteredData.map { (x: calendar.component(.weekday, from: $0.date), y: Double($0.value)) }
+        case .monthly:
+            let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: Date()))!
+            filteredData = registerData.filter { $0.date >= startOfMonth }
+            return filteredData.map { (x: calendar.component(.day, from: $0.date), y: Double($0.value)) }
+        }
+    }
+
+    enum SummaryType: String {
+        case daily = "Daily"
+        case weekly = "Weekly"
+        case monthly = "Monthly"
+    }
 }
 
 struct ChartView: View {
-    let data: [Double]
+    let data: [(x: Int, y: Double)]
     let title: String
+    let summaryType: ChartsView.SummaryType
 
     var body: some View {
         Chart {
-            ForEach(Array(data.enumerated()), id: \.0) { index, value in
+            ForEach(data, id: \.x) { point in
                 LineMark(
-                    x: .value("Index", index + 1),
-                    y: .value("Value", value)
+                    x: .value(xAxisLabel, point.x),
+                    y: .value("Value", point.y)
                 )
                 .foregroundStyle(.yellow) // Line color
             }
         }
         .chartXAxis {
-            AxisMarks(preset: .aligned, position: .bottom) { _ in
+            AxisMarks(preset: .aligned, position: .bottom) { value in
                 AxisGridLine().foregroundStyle(.gray)
                 AxisTick().foregroundStyle(.gray)
                 AxisValueLabel().foregroundStyle(.white) // Label color
             }
         }
         .chartYAxis {
-            AxisMarks(preset: .aligned, position: .leading) { _ in
+            AxisMarks(preset: .aligned, position: .leading) { value in
                 AxisGridLine().foregroundStyle(.gray)
                 AxisTick().foregroundStyle(.gray)
                 AxisValueLabel().foregroundStyle(.white) // Label color
             }
+        }
+    }
+
+    private var xAxisLabel: String {
+        switch summaryType {
+        case .daily:
+            return "Hour"
+        case .weekly:
+            return "Day"
+        case .monthly:
+            return "Day"
         }
     }
 }
