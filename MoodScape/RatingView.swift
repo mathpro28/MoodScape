@@ -13,7 +13,7 @@ struct RatingView: View {
     @Environment(\.modelContext) private var context
     
     @State private var rating: Int = 0
-
+    
     var body: some View {
         VStack {
             HStack(spacing: 5) {
@@ -47,9 +47,11 @@ struct RatingView: View {
             }
         }
         .padding()
-            }
-        
+        .foregroundColor(.white) // Set text color to white
+        .preferredColorScheme(.dark)
     }
+    
+}
 
 
 #Preview {

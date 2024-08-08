@@ -2,7 +2,7 @@
 //  MoodsView.swift
 //  MoodScape
 //
-//  Created by mateo on 7/8/24.
+//  Created by mateo mercado on 7/8/24.
 //
 
 import SwiftUI
@@ -34,11 +34,14 @@ struct MoodsView: View {
                     Image("mood_5")
                         .resizable()
                 default:
-                    Text("An image should be here")
+                    Image("mood_error")
+                        .resizable()
                 }
             }
         }
         .frame(width: 150, height: 150)
+        .foregroundColor(.white) // Set text color to white
+        .preferredColorScheme(.dark)
     }
 }
 

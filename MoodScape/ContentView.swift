@@ -11,10 +11,12 @@ import SwiftData
 struct ContentView: View {
     
     @Environment(\.modelContext) private var context
+    @State private var rating: Int = 5
     
     var body: some View {
         NavigationView {
-            ZStack { // Use ZStack to layer content on top of the background
+            ZStack {
+                // Use ZStack to layer content on top of the background
                 LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
                     .ignoresSafeArea(.all) // Extend gradient to entire screen
                 
@@ -30,21 +32,11 @@ struct ContentView: View {
                         .foregroundColor(.yellow)
                         .font(.largeTitle)
                     
-                    Spacer().frame(height: 250)
+                    Spacer()
                     
-//                                  ZStack {
-//                                      Color.clear
-//                                          .frame(width: 100, height: 100) // Adjust size as needed
-//                    
-//                                      MoodDropView()
-//                                  }
-//                                  .frame(maxWidth: 200, maxHeight: 200)
-//                    
-//                    Spacer().frame(height: 20)
+                    MoodsView(rating: $rating)
                     
                     RatingView()
-                    
-//                    Spacer()
                     
                     NavigationLink(destination: ChartsView()) {
                         Image(systemName: "arrow.right")
@@ -63,7 +55,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
