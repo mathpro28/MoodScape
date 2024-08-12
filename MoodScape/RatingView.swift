@@ -9,26 +9,25 @@ import SwiftUI
 import SwiftData
 
 struct RatingView: View {
-    
     @Environment(\.modelContext) private var context
     
-    @State private var rating: Int = 0
+    @Binding var rating: Int // Binding to update rating in ContentView
     
     var body: some View {
         VStack {
             HStack(spacing: 5) {
                 ForEach(1...5, id: \.self) { number in
                     Text("\(number)")
-                        .frame(width: 40, height: 40) // Adjust the size of the box
-                        .background(number <= rating ? Color.yellow : Color.gray) // Change background color based on rating
-                        .foregroundColor(.white) // Text color
-                        .cornerRadius(5) // Rounded corners for the box
+                        .frame(width: 40, height: 40)
+                        .background(number <= rating ? Color.yellow : Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(5)
                         .onTapGesture {
-                            rating = number
+                            rating = number // Update the rating
                         }
                 }
             }
-            .padding(.bottom, 20) // Add specific padding here
+            .padding(.bottom, 20)
             
             if rating > 0 {
                 Button(action: {
@@ -47,17 +46,15 @@ struct RatingView: View {
             }
         }
         .padding()
-        .foregroundColor(.white) // Set text color to white
+        .foregroundColor(.white)
         .preferredColorScheme(.dark)
     }
-    
 }
-
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: Register.self, configurations: config)
+    let container = try! ModelContainer(for: Register.self, configurations: config)
 
-        return RatingView()
-            .modelContainer(container)
+    return RatingView(rating: .constant(0)) // Use .constant for preview
+        .modelContainer(container)
 }

@@ -9,19 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    
     @Environment(\.modelContext) private var context
-    @State private var rating: Int = 5
+    @State private var rating: Int = 0 // State for rating
     
     var body: some View {
         NavigationView {
             ZStack {
-                // Use ZStack to layer content on top of the background
                 LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
-                    .ignoresSafeArea(.all) // Extend gradient to entire screen
+                    .ignoresSafeArea(.all)
                 
                 VStack {
-                    Spacer().frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                    Spacer().frame(height: 100)
                     
                     Text("How are you feeling ")
                         .bold()
@@ -34,9 +32,9 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    MoodsView(rating: $rating)
+                    MoodsView(rating: rating) // Pass the rating to MoodsView
                     
-                    RatingView()
+                    RatingView(rating: $rating) // Pass the binding of rating to RatingView
                     
                     NavigationLink(destination: ChartsView()) {
                         Image(systemName: "arrow.right")

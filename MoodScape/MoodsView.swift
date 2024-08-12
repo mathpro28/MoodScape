@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct MoodsView: View {
-    
-    @Binding var rating: Int
+    var rating: Int // Receive the rating from ContentView
     
     var body: some View {
         HStack {
@@ -34,13 +33,13 @@ struct MoodsView: View {
                     Image("mood_5")
                         .resizable()
                 default:
-                    Image("mood_error")
+                    Image("mood_default")
                         .resizable()
                 }
             }
         }
         .frame(width: 150, height: 150)
-        .foregroundColor(.white) // Set text color to white
+        .foregroundColor(.white)
         .preferredColorScheme(.dark)
     }
 }
@@ -51,11 +50,10 @@ struct MoodsView_Previews: PreviewProvider {
     }
 
     struct MoodsViewContainer: View {
-        @State private var rating = 3
+        @State private var rating = 4
 
         var body: some View {
-            MoodsView(rating: $rating)
+            MoodsView(rating: rating)
         }
     }
 }
-
