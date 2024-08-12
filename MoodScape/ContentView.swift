@@ -9,17 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    
     @Environment(\.modelContext) private var context
+    @State private var rating: Int = 0 // State for rating
     
     var body: some View {
         NavigationView {
-            ZStack { // Use ZStack to layer content on top of the background
+            ZStack {
                 LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
-                    .ignoresSafeArea(.all) // Extend gradient to entire screen
+                    .ignoresSafeArea(.all)
                 
                 VStack {
-                    Spacer().frame(height: /*@START_MENU_TOKEN@*/100/*@END_MENU_TOKEN@*/)
+                    Spacer().frame(height: 100)
                     
                     Text("How are you feeling ")
                         .bold()
@@ -30,21 +30,11 @@ struct ContentView: View {
                         .foregroundColor(.yellow)
                         .font(.largeTitle)
                     
-                    Spacer().frame(height: 250)
+                    Spacer()
                     
-//                                  ZStack {
-//                                      Color.clear
-//                                          .frame(width: 100, height: 100) // Adjust size as needed
-//                    
-//                                      MoodDropView()
-//                                  }
-//                                  .frame(maxWidth: 200, maxHeight: 200)
-//                    
-//                    Spacer().frame(height: 20)
+                    MoodsView(rating: rating) // Pass the rating to MoodsView
                     
-                    RatingView()
-                    
-//                    Spacer()
+                    RatingView(rating: $rating) // Pass the binding of rating to RatingView
                     
                     NavigationLink(destination: ChartsView()) {
                         Image(systemName: "arrow.right")
@@ -63,7 +53,6 @@ struct ContentView: View {
         }
     }
 }
-
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
