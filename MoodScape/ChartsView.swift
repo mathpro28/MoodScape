@@ -104,7 +104,7 @@ struct ChartView: View {
     var body: some View {
         Chart {
             ForEach(data, id: \.x) { point in
-                LineMark(
+                PointMark(
                     x: .value(xAxisLabel, point.x),
                     y: .value("Value", point.y)
                 )
