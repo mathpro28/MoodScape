@@ -20,7 +20,7 @@ struct RatingView: View {
                     Text("\(number)")
                         .frame(width: 40, height: 40)
                         .background(number <= rating ? Color.yellow : Color.gray)
-                        .foregroundColor(.white)
+                        .foregroundColor(number <= rating ? Color.cAirForceBlue : Color.white)
                         .cornerRadius(5)
                         .onTapGesture {
                             rating = number // Update the rating
@@ -40,7 +40,7 @@ struct RatingView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(width: 130, height: 50)
-                        .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.gray))
+                        .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.cCoral))
                         .shadow(radius: 10)
                 }
             }
@@ -55,6 +55,6 @@ struct RatingView: View {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Register.self, configurations: config)
 
-    return RatingView(rating: .constant(0)) // Use .constant for preview
+    return RatingView(rating: .constant(3)) // Use .constant for preview
         .modelContainer(container)
 }
