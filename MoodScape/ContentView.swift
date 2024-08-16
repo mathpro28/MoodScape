@@ -42,7 +42,7 @@ struct ContentView: View {
                             .foregroundColor(.white)
                             .padding()
                             .frame(width: 130, height: 50)
-                            .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.gray))
+                            .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.cCoral))
                             .shadow(radius: 10)
                     }
                     
