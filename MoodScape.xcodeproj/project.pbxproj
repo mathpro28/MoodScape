@@ -18,6 +18,9 @@
 		A2F63C392BE0549700822BCA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2F63C382BE0549700822BCA /* Preview Assets.xcassets */; };
 		A2F63C402BE05ECA00822BCA /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C3F2BE05ECA00822BCA /* RatingView.swift */; };
 		A2F63C432BE0631500822BCA /* MIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C422BE0631500822BCA /* MIcons.swift */; };
+		FA6FE4312C83A69C00440A26 /* RatingPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FE4302C83A69C00440A26 /* RatingPicker.swift */; };
+		FA6FE4332C83A6FC00440A26 /* RatingAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA6FE4322C83A6FC00440A26 /* RatingAssets.xcassets */; };
+		FA8C13BA2C83A40200A765E2 /* MButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8C13B92C83A40200A765E2 /* MButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		A2F63C382BE0549700822BCA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A2F63C3F2BE05ECA00822BCA /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		A2F63C422BE0631500822BCA /* MIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIcons.swift; sourceTree = "<group>"; };
+		FA6FE4302C83A69C00440A26 /* RatingPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingPicker.swift; sourceTree = "<group>"; };
+		FA6FE4322C83A6FC00440A26 /* RatingAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = RatingAssets.xcassets; sourceTree = "<group>"; };
+		FA8C13B92C83A40200A765E2 /* MButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,12 +71,12 @@
 		A2F63C302BE0549200822BCA /* MoodScape */ = {
 			isa = PBXGroup;
 			children = (
+				FA6FE4342C83AB5000440A26 /* Models */,
+				FA6FE42E2C83A67600440A26 /* Sections */,
+				FA8C13B72C83A3BF00A765E2 /* Components */,
 				A2F63C412BE062FE00822BCA /* Utils */,
 				A2F63C312BE0549200822BCA /* MoodScapeApp.swift */,
-				A279AC812C3C9AC0004410B7 /* Register.swift */,
 				A27557072C5BF20B001BDD88 /* ChartsView.swift */,
-				A2E061A72C6434060064B022 /* MoodsView.swift */,
-				A279AC832C4325C0004410B7 /* HistoryView.swift */,
 				A2F63C332BE0549200822BCA /* ContentView.swift */,
 				A22E1BEE2C33718200A65F31 /* MoodDropView.swift */,
 				A2F63C3F2BE05ECA00822BCA /* RatingView.swift */,
@@ -94,6 +100,49 @@
 				A2F63C422BE0631500822BCA /* MIcons.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		FA6FE42E2C83A67600440A26 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				FA6FE4352C83AB8000440A26 /* History */,
+				FA6FE42F2C83A68100440A26 /* Rating */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		FA6FE42F2C83A68100440A26 /* Rating */ = {
+			isa = PBXGroup;
+			children = (
+				FA6FE4302C83A69C00440A26 /* RatingPicker.swift */,
+				A2E061A72C6434060064B022 /* MoodsView.swift */,
+				FA6FE4322C83A6FC00440A26 /* RatingAssets.xcassets */,
+			);
+			path = Rating;
+			sourceTree = "<group>";
+		};
+		FA6FE4342C83AB5000440A26 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A279AC812C3C9AC0004410B7 /* Register.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FA6FE4352C83AB8000440A26 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				A279AC832C4325C0004410B7 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		FA8C13B72C83A3BF00A765E2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FA8C13B92C83A40200A765E2 /* MButton.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,6 +208,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A2F63C392BE0549700822BCA /* Preview Assets.xcassets in Resources */,
+				FA6FE4332C83A6FC00440A26 /* RatingAssets.xcassets in Resources */,
 				A2F63C362BE0549700822BCA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,9 +224,11 @@
 				A2F63C432BE0631500822BCA /* MIcons.swift in Sources */,
 				A279AC822C3C9AC0004410B7 /* Register.swift in Sources */,
 				A27557082C5BF20B001BDD88 /* ChartsView.swift in Sources */,
+				FA6FE4312C83A69C00440A26 /* RatingPicker.swift in Sources */,
 				A2E061A82C6434060064B022 /* MoodsView.swift in Sources */,
 				A2F63C402BE05ECA00822BCA /* RatingView.swift in Sources */,
 				A2F63C342BE0549200822BCA /* ContentView.swift in Sources */,
+				FA8C13BA2C83A40200A765E2 /* MButton.swift in Sources */,
 				A2F63C322BE0549200822BCA /* MoodScapeApp.swift in Sources */,
 				A22E1BEF2C33718200A65F31 /* MoodDropView.swift in Sources */,
 			);

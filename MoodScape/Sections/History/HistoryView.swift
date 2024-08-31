@@ -22,16 +22,21 @@ struct HistoryView: View {
 //                .padding()
             
             List(entries) { entry in
-                HStack {
-                    Text("Rating: \(entry.value)")
-                    Spacer()
-                    Text(entry.date, style: .date)
-                }
+                EntryRow(entry: entry)
             }
-            .listStyle(PlainListStyle())
+            .listStyle(.plain)
         }
         .padding()
         .navigationTitle("List Summary")
+    }
+
+    @ViewBuilder
+    func EntryRow(entry: Register) -> some View {
+        HStack {
+            Text("Rating: \(entry.value)")
+            Spacer()
+            Text(entry.date, style: .date)
+        }
     }
 }
 
