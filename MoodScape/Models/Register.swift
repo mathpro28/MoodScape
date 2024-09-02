@@ -18,3 +18,15 @@ class Register {
         self.date = date
     }
 }
+
+
+// To support Chart implementation
+extension Register: MChartCoordinates {
+    func x(_ type: SummaryType) -> Int {
+        Calendar.current.component(type.calendarComponent, from: self.date)
+    }
+
+    var y: Double {
+        Double(self.value)
+    }
+}

@@ -10,47 +10,46 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var context
-    @State private var rating: Int = 0 // State for rating
-    
+    @State private var navigate: Bool = false
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
-                    .ignoresSafeArea(.all)
-                
+                Background()
                 VStack {
-                    Spacer().frame(height: 100)
-                    
-                    Text("How are you feeling ")
-                        .bold()
-                        .foregroundColor(.white)
-                        .font(.largeTitle)
-                    + Text("today?")
-                        .bold()
-                        .foregroundColor(.yellow)
-                        .font(.largeTitle)
-                    
                     Spacer()
-                    
-                    MoodsView(rating: rating) // Pass the rating to MoodsView
-                    
-                    RatingView(rating: $rating) // Pass the binding of rating to RatingView
-                    
-                    NavigationLink(destination: ChartsView()) {
-                        Image(systemName: "arrow.right")
-                            .bold()
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 130, height: 50)
-                            .background(RoundedRectangle(cornerRadius: 20).foregroundColor(Color.cCoral))
-                            .shadow(radius: 10)
+                    HeaderView()
+                    Spacer()
+                    RatingPicker()
+                    MButton(systemName: "arrow.right") {
+                        navigate = true
                     }
-                    
                     Spacer()
                 }
                 .padding()
             }
+            .navigationDestination(isPresented: $navigate, destination: {
+                ChartsView()
+            })
         }
+    }
+
+    @ViewBuilder
+    func Background() -> some View {
+        LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
+            .ignoresSafeArea(.all)
+    }
+
+    @ViewBuilder
+    func HeaderView() -> some View {
+        Text("How are you feeling ")
+            .bold()
+            .foregroundStyle(Color.white)
+            .font(.largeTitle)
+        + Text("today?")
+            .bold()
+            .foregroundStyle(Color.yellow)
+            .font(.largeTitle)
     }
 }
 
