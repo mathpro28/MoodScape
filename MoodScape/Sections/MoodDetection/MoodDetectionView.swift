@@ -7,52 +7,83 @@
 
 import SwiftUI
 import AVFoundation
+import PhotosUI
 
 struct MoodDetectionView: View {
     @ObservedObject var cameraManager = CameraManager()
     @State private var mood: String = "Detecting..."
+    @State private var isPhotoPickerPresented = false
+    @State private var selectedImage: UIImage?
 
-    // Preview for the camera feed
     var body: some View {
         VStack {
-            CameraPreview(cameraManager: cameraManager)
-                .onAppear {
-                    cameraManager.configureCamera()
-                }
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.75)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
-                .padding()
+            // Camera preview or selected image
+            if let selectedImage = selectedImage {
+                Image(uiImage: selectedImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.75)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
+                    .padding()
+            } else {
+                CameraPreview(cameraManager: cameraManager)
+                    .onAppear {
+                        cameraManager.configureCamera()
+                    }
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.75)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
+                    .padding()
+            }
 
             Text("Mood: \(mood)")
                 .font(.title)
                 .bold()
                 .padding()
 
+            // Button for detecting mood using camera feed
             Button("Detect Mood") {
-                // Implement mood detection logic
                 detectMood()
             }
             .padding()
             .background(Color.blue)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+            
+            // Button for selecting an image from Photos
+            Button("Choose Image from Photos") {
+                isPhotoPickerPresented = true
+            }
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .sheet(isPresented: $isPhotoPickerPresented) {
+                PhotoPicker(selectedImage: $selectedImage)
+            }
+
+            Spacer()
         }
+        .padding()
     }
 
     private func detectMood() {
-        // This function would interact with the CameraManager to capture a frame
-        // and use your CoreML model to analyze the mood
-        cameraManager.captureFrame { image in
-            // Assume `analyzeMood(image: UIImage)` is your function to analyze the mood
-            mood = analyzeMood(image: image)
+        if let selectedImage = selectedImage {
+            // Analyze mood using the selected image
+            mood = analyzeMood(image: selectedImage)
+        } else {
+            // Analyze mood using camera frame
+            cameraManager.captureFrame { image in
+                mood = analyzeMood(image: image)
+            }
         }
     }
-    
-    // Dummy function to replace with actual mood analysis
+
+    // Dummy function for mood analysis
     func analyzeMood(image: UIImage?) -> String {
-        // Placeholder for mood analysis logic
-        return "Happy" // Return detected mood
+        // Placeholder for CoreML model analysis
+        return "Happy" // For testing purposes
     }
 }
 
@@ -67,6 +98,48 @@ struct CameraPreview: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        // Update the view if needed
+        // Update view if needed
+    }
+}
+
+struct PhotoPicker: UIViewControllerRepresentable {
+    @Binding var selectedImage: UIImage?
+
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.filter = .images // Only show images
+        config.selectionLimit = 1 // Limit to one image
+
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {
+        // No updates needed
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    class Coordinator: NSObject, PHPickerViewControllerDelegate {
+        var parent: PhotoPicker
+
+        init(_ parent: PhotoPicker) {
+            self.parent = parent
+        }
+
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            picker.dismiss(animated: true)
+
+            guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else { return }
+
+            provider.loadObject(ofClass: UIImage.self) { image, _ in
+                DispatchQueue.main.async {
+                    self.parent.selectedImage = image as? UIImage
+                }
+            }
+        }
     }
 }
