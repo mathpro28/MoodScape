@@ -26,7 +26,10 @@ struct ContentView: View {
                     }
                     Spacer()
                     HStack {
-                        CameraView()
+                        NavigationLink(destination: MoodDetectionView()) {
+                                            CameraView()
+                                        }
+                                        .buttonStyle(PlainButtonStyle())
                         Spacer()
                     }
                 }

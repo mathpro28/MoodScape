@@ -11,6 +11,8 @@
 		A27557082C5BF20B001BDD88 /* ChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27557072C5BF20B001BDD88 /* ChartsView.swift */; };
 		A279AC822C3C9AC0004410B7 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A279AC812C3C9AC0004410B7 /* Register.swift */; };
 		A279AC842C4325C0004410B7 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A279AC832C4325C0004410B7 /* HistoryView.swift */; };
+		A2C121782CA25F7C001C866E /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C121772CA25F77001C866E /* CameraManager.swift */; };
+		A2C1217A2CA26020001C866E /* MoodDetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C121792CA2601B001C866E /* MoodDetectionView.swift */; };
 		A2E061A82C6434060064B022 /* MoodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E061A72C6434060064B022 /* MoodsView.swift */; };
 		A2F63C322BE0549200822BCA /* MoodScapeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C312BE0549200822BCA /* MoodScapeApp.swift */; };
 		A2F63C342BE0549200822BCA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F63C332BE0549200822BCA /* ContentView.swift */; };
@@ -32,6 +34,8 @@
 		A279AC812C3C9AC0004410B7 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		A279AC832C4325C0004410B7 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		A2C121752CA25D5E001C866E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A2C121772CA25F77001C866E /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		A2C121792CA2601B001C866E /* MoodDetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodDetectionView.swift; sourceTree = "<group>"; };
 		A2E061A72C6434060064B022 /* MoodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodsView.swift; sourceTree = "<group>"; };
 		A2F63C2E2BE0549200822BCA /* MoodScape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoodScape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F63C312BE0549200822BCA /* MoodScapeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodScapeApp.swift; sourceTree = "<group>"; };
@@ -59,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A2C121762CA25F54001C866E /* MoodDetection */ = {
+			isa = PBXGroup;
+			children = (
+				A2C121792CA2601B001C866E /* MoodDetectionView.swift */,
+				A2C121772CA25F77001C866E /* CameraManager.swift */,
+			);
+			path = MoodDetection;
+			sourceTree = "<group>";
+		};
 		A2F63C252BE0549200822BCA = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +124,7 @@
 		FA6FE42E2C83A67600440A26 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				A2C121762CA25F54001C866E /* MoodDetection */,
 				FA6FE4362C83ADC200440A26 /* Charts */,
 				FA6FE4352C83AB8000440A26 /* History */,
 				FA6FE42F2C83A68100440A26 /* Rating */,
@@ -259,12 +273,14 @@
 				A2F63C432BE0631500822BCA /* MIcons.swift in Sources */,
 				FA6FE43A2C83B54C00440A26 /* SummaryType.swift in Sources */,
 				A279AC822C3C9AC0004410B7 /* Register.swift in Sources */,
+				A2C121782CA25F7C001C866E /* CameraManager.swift in Sources */,
 				FA6FE43E2C83B61E00440A26 /* MChartCoordinates.swift in Sources */,
 				A27557082C5BF20B001BDD88 /* ChartsView.swift in Sources */,
 				FA6FE4312C83A69C00440A26 /* RatingPicker.swift in Sources */,
 				FA6FE4382C83B4A800440A26 /* MChartView.swift in Sources */,
 				A2E061A82C6434060064B022 /* MoodsView.swift in Sources */,
 				A2F63C402BE05ECA00822BCA /* RatingView.swift in Sources */,
+				A2C1217A2CA26020001C866E /* MoodDetectionView.swift in Sources */,
 				A2F63C342BE0549200822BCA /* ContentView.swift in Sources */,
 				FA8C13BA2C83A40200A765E2 /* MButton.swift in Sources */,
 				A2F63C322BE0549200822BCA /* MoodScapeApp.swift in Sources */,
