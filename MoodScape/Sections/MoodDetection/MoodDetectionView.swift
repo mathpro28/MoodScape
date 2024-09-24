@@ -16,58 +16,74 @@ struct MoodDetectionView: View {
     @State private var selectedImage: UIImage?
 
     var body: some View {
-        VStack {
-            // Camera preview or selected image
-            if let selectedImage = selectedImage {
-                Image(uiImage: selectedImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.75)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
+        ZStack {
+            Background()
+            VStack {
+                Spacer()
+                Text("Mood: \(mood)")
+                    .font(.title3)
+                    .bold()
                     .padding()
-            } else {
-                CameraPreview(cameraManager: cameraManager)
-                    .onAppear {
-                        cameraManager.configureCamera()
+                
+                // Camera preview or selected image
+                if let selectedImage = selectedImage {
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.7)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
+                        .padding()
+                } else {
+                    CameraPreview(cameraManager: cameraManager)
+                        .onAppear {
+                            cameraManager.configureCamera()
+                        }
+                        .frame(width: UIScreen.main.bounds.width - 50, height: UIScreen.main.bounds.height * 0.7)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
+                        .padding()
+                }
+                
+                HStack {
+                    // Button for selecting an image from Photos
+                    Button(action: {
+                        isPhotoPickerPresented = true
+                    }) {
+                        Image(systemName: "photo.on.rectangle")
+                            .font(.title) // Adjust size as needed
+                            .foregroundColor(.yellow)
+                            .padding()
                     }
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.75)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
-                    .padding()
-            }
-
-            Text("Mood: \(mood)")
-                .font(.title)
-                .bold()
-                .padding()
-
-            // Button for detecting mood using camera feed
-            Button("Detect Mood") {
-                detectMood()
-            }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .sheet(isPresented: $isPhotoPickerPresented) {
+                        PhotoPicker(selectedImage: $selectedImage)
+                    }
             
-            // Button for selecting an image from Photos
-            Button("Choose Image from Photos") {
-                isPhotoPickerPresented = true
+                    Button(action: {
+                        detectMood()
+                    }) {
+                        Image(systemName: "circle.fill")
+                            .font(.largeTitle) // Adjust size as needed
+                            .foregroundColor(.yellow)
+                            .padding()
+                    }
+                    
+                    Button(action: {
+//                        cameraManager.switchCamera()
+                    }) {
+                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.camera")
+                            .font(.title)
+                            .foregroundColor(.yellow)
+                            .padding()
+                    }
+                }
+                Spacer()
             }
             .padding()
-            .background(Color.green)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-            .sheet(isPresented: $isPhotoPickerPresented) {
-                PhotoPicker(selectedImage: $selectedImage)
-            }
-
-            Spacer()
         }
         .padding()
     }
-
+    
     private func detectMood() {
         if let selectedImage = selectedImage {
             // Analyze mood using the selected image
@@ -79,12 +95,18 @@ struct MoodDetectionView: View {
             }
         }
     }
+}
 
-    // Dummy function for mood analysis
-    func analyzeMood(image: UIImage?) -> String {
-        // Placeholder for CoreML model analysis
-        return "Happy" // For testing purposes
-    }
+@ViewBuilder
+func Background() -> some View {
+    LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
+        .ignoresSafeArea(.all)
+}
+
+// Dummy function for mood analysis
+func analyzeMood(image: UIImage?) -> String {
+    // Placeholder for CoreML model analysis
+    return "Happy" // For testing purposes
 }
 
 struct CameraPreview: UIViewRepresentable {
@@ -141,5 +163,11 @@ struct PhotoPicker: UIViewControllerRepresentable {
                 }
             }
         }
+    }
+}
+
+struct MoodDetectionView_Previews: PreviewProvider {
+    static var previews: some View {
+        MoodDetectionView()
     }
 }

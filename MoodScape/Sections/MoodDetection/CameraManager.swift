@@ -1,108 +1,100 @@
-//
-//  CameraManager.swift
-//  MoodScape
-//
-//  Created by Mateo Mercado on 23/9/24.
-//
-
 import AVFoundation
 import UIKit
 
-class CameraManager: NSObject, ObservableObject {
-    
-    // MARK: - Properties
+class CameraManager: NSObject, ObservableObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     private var captureSession: AVCaptureSession?
-    private var previewLayer: AVCaptureVideoPreviewLayer?
-    private var videoOutput = AVCaptureVideoDataOutput()
-    private let cameraQueue = DispatchQueue(label: "CameraQueue")
+    private var currentInput: AVCaptureDeviceInput?
+    private var videoOutput: AVCaptureVideoDataOutput?
     
-    // Delegate to pass frames to the view or processing unit
-    var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
+    private var frameCaptureCompletion: ((UIImage?) -> Void)?
+    private var isUsingFrontCamera = false
 
-    // MARK: - Setup
-    func configureCamera() {
-        checkCameraPermissions { [weak self] granted in
-            guard let self = self else { return }
-            if granted {
-                self.setupSession()
-            } else {
-                print("Camera permission denied")
-            }
-        }
+    override init() {
+        super.init()
     }
-    
-    private func setupSession() {
+
+    func configureCamera() {
         captureSession = AVCaptureSession()
         captureSession?.beginConfiguration()
-        
-        // Set the input (camera)
-        guard let camera = AVCaptureDevice.default(for: .video),
-              let cameraInput = try? AVCaptureDeviceInput(device: camera),
-              (captureSession?.canAddInput(cameraInput) ?? false) else {
-            print("Error: Could not add camera input")
+
+        guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+            print("Unable to access the back camera!")
             return
         }
-        captureSession?.addInput(cameraInput)
-        
-        // Set the output (video frames)
-        if captureSession?.canAddOutput(videoOutput) ?? false {
-            videoOutput.setSampleBufferDelegate(delegate, queue: cameraQueue)
-            captureSession?.addOutput(videoOutput)
-        } else {
-            print("Error: Could not add video output")
-            return
-        }
-        
-        captureSession?.commitConfiguration()
-        startSession()
-    }
 
-    // MARK: - Preview Layer Setup
-    func addPreviewLayer(to view: UIView) {
-        guard let captureSession = captureSession else { return }
-        
-        // Create and configure the preview layer
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer?.videoGravity = .resizeAspectFill
-        previewLayer?.frame = view.bounds
-        
-        // Add the preview layer to the provided view
-        view.layer.addSublayer(previewLayer!)
-    }
-
-    // MARK: - Permissions
-    private func checkCameraPermissions(completion: @escaping (Bool) -> Void) {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            completion(true)
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                DispatchQueue.main.async {
-                    completion(granted)
-                }
+        do {
+            let input = try AVCaptureDeviceInput(device: camera)
+            if let session = captureSession, session.canAddInput(input) {
+                session.addInput(input)
+                currentInput = input
+            } else {
+                print("Unable to add input to session")
+                return
             }
-        case .denied, .restricted:
-            completion(false)
-        @unknown default:
-            completion(false)
+
+            let videoOutput = AVCaptureVideoDataOutput()
+            if let session = captureSession, session.canAddOutput(videoOutput) {
+                session.addOutput(videoOutput)
+                self.videoOutput = videoOutput
+                videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
+            }
+
+            captureSession?.commitConfiguration()
+            captureSession?.startRunning()
+        } catch {
+            print("Error setting up camera input: \(error)")
         }
     }
 
-    // MARK: - Session Controls
-    func startSession() {
-        cameraQueue.async {
-            self.captureSession?.startRunning()
+    func addPreviewLayer(to view: UIView) {
+        guard let session = captureSession else {
+            print("Capture session is not initialized")
+            return
         }
+
+        let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer.frame = view.bounds
+        previewLayer.videoGravity = .resizeAspectFill
+        view.layer.addSublayer(previewLayer)
     }
 
-    func stopSession() {
-        cameraQueue.async {
-            self.captureSession?.stopRunning()
-        }
-    }
-    
-    // Call this when capturing an image frame
     func captureFrame(completion: @escaping (UIImage?) -> Void) {
-        // Logic to capture a frame and return it as a UIImage (handled by delegate)
+        self.frameCaptureCompletion = completion
+    }
+
+    // Safely unwrap session and input before switching camera
+    func switchCamera() {
+        guard let session = captureSession, let currentInput = currentInput else {
+            print("Session or input not initialized")
+            return
+        }
+
+        session.beginConfiguration()
+        
+        // Remove the current input
+        session.removeInput(currentInput)
+        
+        let newCameraPosition: AVCaptureDevice.Position = isUsingFrontCamera ? .back : .front
+        isUsingFrontCamera.toggle()
+
+        guard let newCamera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: newCameraPosition) else {
+            print("Unable to access the \(isUsingFrontCamera ? "front" : "back") camera!")
+            session.commitConfiguration()
+            return
+        }
+
+        do {
+            let newInput = try AVCaptureDeviceInput(device: newCamera)
+            if session.canAddInput(newInput) {
+                session.addInput(newInput)
+                self.currentInput = newInput
+            } else {
+                print("Unable to add the new camera input")
+            }
+        } catch {
+            print("Error switching cameras: \(error)")
+        }
+
+        session.commitConfiguration()
     }
 }
