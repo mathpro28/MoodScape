@@ -31,6 +31,7 @@
 		A27557072C5BF20B001BDD88 /* ChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsView.swift; sourceTree = "<group>"; };
 		A279AC812C3C9AC0004410B7 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		A279AC832C4325C0004410B7 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		A2C121752CA25D5E001C866E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A2E061A72C6434060064B022 /* MoodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodsView.swift; sourceTree = "<group>"; };
 		A2F63C2E2BE0549200822BCA /* MoodScape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoodScape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2F63C312BE0549200822BCA /* MoodScapeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodScapeApp.swift; sourceTree = "<group>"; };
@@ -77,6 +78,7 @@
 		A2F63C302BE0549200822BCA /* MoodScape */ = {
 			isa = PBXGroup;
 			children = (
+				A2C121752CA25D5E001C866E /* Info.plist */,
 				FA6FE4342C83AB5000440A26 /* Models */,
 				FA6FE42E2C83A67600440A26 /* Sections */,
 				FA8C13B72C83A3BF00A765E2 /* Components */,
@@ -403,8 +405,10 @@
 				DEVELOPMENT_TEAM = 9UX79BP8JN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MoodScape/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MoodScape;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Detect face and determine mood";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -434,8 +438,10 @@
 				DEVELOPMENT_TEAM = 9UX79BP8JN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MoodScape/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MoodScape;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Detect face and determine mood";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

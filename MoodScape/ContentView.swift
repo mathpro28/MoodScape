@@ -25,6 +25,10 @@ struct ContentView: View {
                         navigate = true
                     }
                     Spacer()
+                    HStack {
+                        CameraView()
+                        Spacer()
+                    }
                 }
                 .padding()
             }
@@ -50,6 +54,14 @@ struct ContentView: View {
             .bold()
             .foregroundStyle(Color.yellow)
             .font(.largeTitle)
+    }
+    
+    @ViewBuilder
+    func CameraView() -> some View {
+        Image(systemName: "camera")
+            .font(.title)
+            .foregroundStyle(Color.yellow)
+            .padding()
     }
 }
 
