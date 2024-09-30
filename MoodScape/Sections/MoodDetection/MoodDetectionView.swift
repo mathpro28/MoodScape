@@ -46,49 +46,28 @@ struct MoodDetectionView: View {
                 }
                 
                 HStack(spacing: 30) {
-                    // Button for selecting an image from Photos
-                    Button(action: {
+                    IconButtonView(systemName: "photo.fill.on.rectangle.fill",
+                                   iconColor: .blue,
+                                   labelText: "Gallery",
+                                   labelColor: .blue) {
                         isPhotoPickerPresented = true
-                    }) {
-                        VStack {
-                            Image(systemName: "photo.fill.on.rectangle.fill")
-                                .font(.largeTitle) // Larger icon size for better visibility
-                                .foregroundColor(.blue) // Color that contrasts well with the theme
-                            Text("Gallery")
-                                .foregroundColor(.blue)
-                                .font(.footnote)
-                        }
                     }
                     .sheet(isPresented: $isPhotoPickerPresented) {
                         PhotoPicker(selectedImage: $selectedImage)
                     }
 
-                    // Button for detecting mood (like a capture button)
-                    Button(action: {
+                    IconButtonView(systemName: "face.smiling.fill",
+                                   iconColor: .green,
+                                   labelText: "Detect",
+                                   labelColor: .green) {
                         detectMood()
-                    }) {
-                        VStack {
-                            Image(systemName: "face.smiling.fill") // More mood-related icon
-                                .font(.largeTitle) // Large button to stand out
-                                .foregroundColor(.green)
-                            Text("Detect")
-                                .foregroundColor(.green)
-                                .font(.footnote)
-                        }
                     }
 
-                    // Button to switch between cameras
-                    Button(action: {
+                    IconButtonView(systemName: "arrow.triangle.2.circlepath.camera.fill",
+                                   iconColor: .purple,
+                                   labelText: "Switch",
+                                   labelColor: .purple) {
                         cameraManager.switchCamera()
-                    }) {
-                        VStack {
-                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill") // Camera switch icon
-                                .font(.largeTitle) // Adjust size for symmetry with other buttons
-                                .foregroundColor(.purple)
-                            Text("Switch")
-                                .foregroundColor(.purple)
-                                .font(.footnote)
-                        }
                     }
                 }
                 .padding()
@@ -187,5 +166,28 @@ struct PhotoPicker: UIViewControllerRepresentable {
 struct MoodDetectionView_Previews: PreviewProvider {
     static var previews: some View {
         MoodDetectionView()
+    }
+}
+
+struct IconButtonView: View {
+    var systemName: String
+    var iconColor: Color
+    var labelText: String
+    var labelColor: Color
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: {
+            action()
+        }) {
+            VStack {
+                Image(systemName: systemName)
+                    .font(.largeTitle)
+                    .foregroundColor(iconColor)
+                Text(labelText)
+                    .foregroundColor(labelColor)
+                    .font(.footnote)
+            }
+        }
     }
 }
