@@ -19,6 +19,7 @@ struct MoodDetectionView: View {
         ZStack {
             Background()
             VStack {
+                Spacer()
                 // Camera preview with safe area consideration
                 CameraPreview(cameraManager: cameraManager)
                     .onAppear {
@@ -26,7 +27,7 @@ struct MoodDetectionView: View {
                     }
                     .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.6) // Adjust to avoid dynamic island
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.cChineseViolet, lineWidth: 4))
                     .padding(.top, 50) // Add padding to avoid dynamic island overlap
                 
                 Spacer()
@@ -37,9 +38,9 @@ struct MoodDetectionView: View {
                 // HStack for buttons (Photo Picker, Detect Mood, Switch Camera)
                 HStack(spacing: 30) {
                     IconButtonView(systemName: "photo.fill.on.rectangle.fill",
-                                   iconColor: .blue,
+                                   iconColor: .cTiffanyBlue,
                                    labelText: "Gallery",
-                                   labelColor: .blue) {
+                                   labelColor: .cTiffanyBlue) {
                         isPhotoPickerPresented = true
                     }
                                    .sheet(isPresented: $isPhotoPickerPresented) {
@@ -47,16 +48,16 @@ struct MoodDetectionView: View {
                                    }
                     
                     IconButtonView(systemName: "face.smiling.fill",
-                                   iconColor: .green,
+                                   iconColor: .cJonquil,
                                    labelText: "Detect",
-                                   labelColor: .green) {
+                                   labelColor: .cJonquil) {
                         detectMood()
                     }
                     
                     IconButtonView(systemName: "arrow.triangle.2.circlepath.camera.fill",
-                                   iconColor: .purple,
+                                   iconColor: .cCoral,
                                    labelText: "Switch",
-                                   labelColor: .purple) {
+                                   labelColor: .cCoral) {
                         cameraManager.switchCamera()
                     }
                 }
@@ -92,7 +93,7 @@ struct MoodDetectionView: View {
 
 @ViewBuilder
 func Background() -> some View {
-    LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
+    LinearGradient(gradient: Gradient(colors: [.black, .black]), startPoint: .bottom, endPoint: .top)
         .ignoresSafeArea(.all)
 }
 
