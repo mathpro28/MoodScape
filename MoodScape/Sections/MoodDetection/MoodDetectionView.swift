@@ -45,39 +45,57 @@ struct MoodDetectionView: View {
                         .padding()
                 }
                 
-                HStack {
+                HStack(spacing: 30) {
                     // Button for selecting an image from Photos
                     Button(action: {
                         isPhotoPickerPresented = true
                     }) {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.title) // Adjust size as needed
-                            .foregroundColor(.yellow)
-                            .padding()
+                        VStack {
+                            Image(systemName: "photo.fill.on.rectangle.fill")
+                                .font(.largeTitle) // Larger icon size for better visibility
+                                .foregroundColor(.blue) // Color that contrasts well with the theme
+                            Text("Gallery")
+                                .foregroundColor(.blue)
+                                .font(.footnote)
+                        }
                     }
                     .sheet(isPresented: $isPhotoPickerPresented) {
                         PhotoPicker(selectedImage: $selectedImage)
                     }
-            
+
+                    // Button for detecting mood (like a capture button)
                     Button(action: {
                         detectMood()
                     }) {
-                        Image(systemName: "circle.fill")
-                            .font(.largeTitle) // Adjust size as needed
-                            .foregroundColor(.yellow)
-                            .padding()
+                        VStack {
+                            Image(systemName: "face.smiling.fill") // More mood-related icon
+                                .font(.largeTitle) // Large button to stand out
+                                .foregroundColor(.green)
+                            Text("Detect")
+                                .foregroundColor(.green)
+                                .font(.footnote)
+                        }
                     }
-                    
+
+                    // Button to switch between cameras
                     Button(action: {
-//                        cameraManager.switchCamera()
+                        cameraManager.switchCamera()
                     }) {
-                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.camera")
-                            .font(.title)
-                            .foregroundColor(.yellow)
-                            .padding()
+                        VStack {
+                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill") // Camera switch icon
+                                .font(.largeTitle) // Adjust size for symmetry with other buttons
+                                .foregroundColor(.purple)
+                            Text("Switch")
+                                .foregroundColor(.purple)
+                                .font(.footnote)
+                        }
                     }
                 }
-                Spacer()
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .shadow(radius: 5)
+
             }
             .padding()
         }
