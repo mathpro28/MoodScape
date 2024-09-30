@@ -19,32 +19,22 @@ struct MoodDetectionView: View {
         ZStack {
             Background()
             VStack {
+                // Camera preview with safe area consideration
+                CameraPreview(cameraManager: cameraManager)
+                    .onAppear {
+                        cameraManager.configureCamera()
+                    }
+                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.6) // Adjust to avoid dynamic island
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.blue, lineWidth: 4))
+                    .padding(.top, 50) // Add padding to avoid dynamic island overlap
+                
                 Spacer()
-                Text("Mood: \(mood)")
-                    .font(.title3)
-                    .bold()
-                    .padding()
                 
-                // Camera preview or selected image
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.7)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
-                        .padding()
-                } else {
-                    CameraPreview(cameraManager: cameraManager)
-                        .onAppear {
-                            cameraManager.configureCamera()
-                        }
-                        .frame(width: UIScreen.main.bounds.width - 50, height: UIScreen.main.bounds.height * 0.7)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
-                        .padding()
-                }
+                // Mood text
+                MoodTextView(text: "Mood: \(mood)", textColor: .primary)
                 
+                // HStack for buttons (Photo Picker, Detect Mood, Switch Camera)
                 HStack(spacing: 30) {
                     IconButtonView(systemName: "photo.fill.on.rectangle.fill",
                                    iconColor: .blue,
@@ -52,17 +42,17 @@ struct MoodDetectionView: View {
                                    labelColor: .blue) {
                         isPhotoPickerPresented = true
                     }
-                    .sheet(isPresented: $isPhotoPickerPresented) {
-                        PhotoPicker(selectedImage: $selectedImage)
-                    }
-
+                                   .sheet(isPresented: $isPhotoPickerPresented) {
+                                       PhotoPicker(selectedImage: $selectedImage)
+                                   }
+                    
                     IconButtonView(systemName: "face.smiling.fill",
                                    iconColor: .green,
                                    labelText: "Detect",
                                    labelColor: .green) {
                         detectMood()
                     }
-
+                    
                     IconButtonView(systemName: "arrow.triangle.2.circlepath.camera.fill",
                                    iconColor: .purple,
                                    labelText: "Switch",
@@ -74,13 +64,16 @@ struct MoodDetectionView: View {
                 .background(Color.gray.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .shadow(radius: 5)
-
+                
+                Spacer()
+                
+                // Ensuring proper spacing from the bottom bar
+                Spacer()
+                    .frame(height: 20) // Add extra padding for bottom bar safe area
             }
-            .padding()
-        }
-        .padding()
+            .edgesIgnoringSafeArea([.top])
+        } // Ignore top safe area, but maintain bottom safe area
     }
-    
     private func detectMood() {
         if let selectedImage = selectedImage {
             // Analyze mood using the selected image
@@ -93,6 +86,9 @@ struct MoodDetectionView: View {
         }
     }
 }
+
+
+
 
 @ViewBuilder
 func Background() -> some View {
@@ -191,3 +187,19 @@ struct IconButtonView: View {
         }
     }
 }
+
+struct MoodTextView: View {
+    var text: String
+    var textColor: Color
+    var font: Font = .title3
+    var isBold: Bool = true
+
+    var body: some View {
+        Text(text)
+            .font(font)
+            .foregroundColor(textColor)
+            .bold(isBold)
+            .padding()
+    }
+}
+
