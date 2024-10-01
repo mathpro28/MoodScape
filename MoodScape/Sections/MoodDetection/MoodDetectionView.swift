@@ -20,70 +20,60 @@ struct MoodDetectionView: View {
             Background()
             VStack {
                 Spacer()
-                Text("Mood: \(mood)")
-                    .font(.title3)
-                    .bold()
-                    .padding()
+                // Camera preview with safe area consideration
+                CameraPreview(cameraManager: cameraManager)
+                    .onAppear {
+                        cameraManager.configureCamera()
+                    }
+                    .frame(width: UIScreen.main.bounds.width * 0.9, height: UIScreen.main.bounds.height * 0.6) // Adjust to avoid dynamic island
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.cChineseViolet, lineWidth: 4))
+                    .padding(.top, 50) // Add padding to avoid dynamic island overlap
                 
-                // Camera preview or selected image
-                if let selectedImage = selectedImage {
-                    Image(uiImage: selectedImage)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.7)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
-                        .padding()
-                } else {
-                    CameraPreview(cameraManager: cameraManager)
-                        .onAppear {
-                            cameraManager.configureCamera()
-                        }
-                        .frame(width: UIScreen.main.bounds.width - 50, height: UIScreen.main.bounds.height * 0.7)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white, lineWidth: 4))
-                        .padding()
-                }
+                Spacer()
                 
-                HStack {
-                    // Button for selecting an image from Photos
-                    Button(action: {
+                // Mood text
+                MoodTextView(text: "Mood: \(mood)", textColor: .primary)
+                
+                // HStack for buttons (Photo Picker, Detect Mood, Switch Camera)
+                HStack(spacing: 30) {
+                    IconButtonView(systemName: "photo.fill.on.rectangle.fill",
+                                   iconColor: .cTiffanyBlue,
+                                   labelText: "Gallery",
+                                   labelColor: .cTiffanyBlue) {
                         isPhotoPickerPresented = true
-                    }) {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.title) // Adjust size as needed
-                            .foregroundColor(.yellow)
-                            .padding()
                     }
-                    .sheet(isPresented: $isPhotoPickerPresented) {
-                        PhotoPicker(selectedImage: $selectedImage)
-                    }
-            
-                    Button(action: {
+                                   .sheet(isPresented: $isPhotoPickerPresented) {
+                                       PhotoPicker(selectedImage: $selectedImage)
+                                   }
+                    
+                    IconButtonView(systemName: "face.smiling.fill",
+                                   iconColor: .cJonquil,
+                                   labelText: "Detect",
+                                   labelColor: .cJonquil) {
                         detectMood()
-                    }) {
-                        Image(systemName: "circle.fill")
-                            .font(.largeTitle) // Adjust size as needed
-                            .foregroundColor(.yellow)
-                            .padding()
                     }
                     
-                    Button(action: {
-//                        cameraManager.switchCamera()
-                    }) {
-                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90.camera")
-                            .font(.title)
-                            .foregroundColor(.yellow)
-                            .padding()
+                    IconButtonView(systemName: "arrow.triangle.2.circlepath.camera.fill",
+                                   iconColor: .cCoral,
+                                   labelText: "Switch",
+                                   labelColor: .cCoral) {
+                        cameraManager.switchCamera()
                     }
                 }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .shadow(radius: 5)
+                
                 Spacer()
+                
+                // Ensuring proper spacing from the bottom bar
+                Spacer()
+                    .frame(height: 20) // Add extra padding for bottom bar safe area
             }
-            .padding()
-        }
-        .padding()
+        } 
     }
-    
     private func detectMood() {
         if let selectedImage = selectedImage {
             // Analyze mood using the selected image
@@ -97,9 +87,12 @@ struct MoodDetectionView: View {
     }
 }
 
+
+
+
 @ViewBuilder
 func Background() -> some View {
-    LinearGradient(gradient: Gradient(colors: [.black, .gray]), startPoint: .bottom, endPoint: .top)
+    LinearGradient(gradient: Gradient(colors: [.black, .black]), startPoint: .bottom, endPoint: .top)
         .ignoresSafeArea(.all)
 }
 
@@ -171,3 +164,42 @@ struct MoodDetectionView_Previews: PreviewProvider {
         MoodDetectionView()
     }
 }
+
+struct IconButtonView: View {
+    var systemName: String
+    var iconColor: Color
+    var labelText: String
+    var labelColor: Color
+    var action: () -> Void
+
+    var body: some View {
+        Button(action: {
+            action()
+        }) {
+            VStack {
+                Image(systemName: systemName)
+                    .font(.largeTitle)
+                    .foregroundColor(iconColor)
+                Text(labelText)
+                    .foregroundColor(labelColor)
+                    .font(.footnote)
+            }
+        }
+    }
+}
+
+struct MoodTextView: View {
+    var text: String
+    var textColor: Color
+    var font: Font = .title3
+    var isBold: Bool = true
+
+    var body: some View {
+        Text(text)
+            .font(font)
+            .foregroundColor(textColor)
+            .bold(isBold)
+            .padding()
+    }
+}
+
