@@ -72,8 +72,7 @@ struct MoodDetectionView: View {
                 Spacer()
                     .frame(height: 20) // Add extra padding for bottom bar safe area
             }
-//            .edgesIgnoringSafeArea([.top])
-        } // Ignore top safe area, but maintain bottom safe area
+        } 
     }
     private func detectMood() {
         if let selectedImage = selectedImage {
