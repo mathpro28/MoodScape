@@ -27,11 +27,24 @@ struct ContentView: View {
                     Spacer()
                     HStack {
                         NavigationLink(destination: MoodDetectionView()) {
-                                            CameraView()
-                                        }
-                                        .buttonStyle(PlainButtonStyle())
+                            CameraView()
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .gesture(
+                            DragGesture(minimumDistance: 30) // Adjust the distance as needed
+                                .onEnded { value in
+                                    if value.translation.width > 0 {
+                                        // Swipe right detected
+                                        // Navigate to CameraView()
+                                        // You may need to create a state variable for navigation
+                                        // and trigger it here
+                                        navigate = true
+                                    }
+                                }
+                        )
                         Spacer()
                     }
+
                 }
                 .padding()
             }
